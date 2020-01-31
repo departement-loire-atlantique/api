@@ -1,0 +1,244 @@
+﻿html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+	width:100%;
+}
+
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    line-height: 1.4;
+    font-family: "DroidSansRegular",Verdana,sans-serif;
+    src: url("../fonts/DroidSans-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/DroidSans-webfont.woff") format("woff"), url("../fonts/DroidSans-webfont.ttf") format("truetype"), url("../fonts/DroidSans-webfont.svg#DroidSansRegular") format("svg");
+}
+
+/**
+ * footer fixed if content doesn't fill the page, not fixed if content fills the page
+ * http://www.cssreset.com/demos/layouts/how-to-keep-footer-at-bottom-of-page-with-css/
+ */
+#appwrapper {
+	min-height:100%;
+	position:relative;
+}
+
+#maincontent {
+	padding-bottom:80px;
+}
+
+/*
+ * Remove text-shadow in selection highlight: h5bp.com/i
+ * These selection declarations have to be separate.
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+/*
+ * Remove the gap between images and the bottom of their containers: h5bp.com/i/440
+ */
+
+img {
+    vertical-align: middle;
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+
+b,
+strong {
+    font-weight: bold;
+}
+
+.container {
+   margin: 0 auto;
+   position: relative;
+}
+	
+.footer {
+	z-index: 1000;
+	height: 70px;
+	width: 100%;
+	background: #EAEAEA;
+	position:absolute;
+	left:0;
+	bottom:0;
+}	
+
+.footer img, #header img {
+	max-width: 100%;
+}	
+.footer ul {
+	padding-top: 5px;
+	overflow: hidden;
+	margin: 0 12px 0 4%;
+}
+.footer li {
+	float: right;
+	list-style: none;
+	margin-top: 8px;
+}
+.footer li:first-child {
+	float: left;
+	margin: 0;
+	margin-top: 12px;
+}
+
+
+.header {
+	background: url("../images/89238efe.bg-header.png") repeat-x;
+}
+.header h1 {
+	margin: 0;
+}
+
+.entete {
+	padding-top: 10px;
+}
+
+.zoneAlerte {
+	border: 3px solid #E2000A;
+	margin: 20px 20px 10px 20px;
+	width: auto;
+}
+
+.zoneOpen ul {
+	background: #FFF url("../images/47875b98.picto-alerte-panneau.png") no-repeat left 10px;
+	margin: 14px 20px 20px 17px;
+	padding: 0 0 0 92px;
+	list-style: none;
+	overflow: hidden;
+	min-height: 60px;
+}
+.zoneOpen ul li p {
+	font-size: 1.8em;
+	font-weight: bold;
+	margin: 0 0 10px 0;
+}
+
+p.more {
+	font-size: 1.6em;
+}
+p.more a {
+	color: #000;
+	padding-left: 24px;
+	background: url("../images/b7fced06.puce-lien-more.png") no-repeat left;
+}
+p.more a:active,
+p.more a:focus {
+	text-decoration: none;
+}
+
+ul.summary li {
+	padding-left: 20px;	
+}
+
+ul.summary li:before {
+    content: "o ";
+}
+
+
+footer a { color: black;}
+
+
+@media only screen and (min-width: 768px) and (max-width: 960px) {  
+   .container {
+	   width: 640px;
+   }	
+}
+
+
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+
+   .container {
+	   width: 100%;
+	   max-width: 640px;
+   }
+
+	.zoneAlerte {
+		width: auto;
+	}
+}
+	
+@media only screen and (min-width: 480px) and (max-width: 599px) {
+		
+   .container {
+	   width: 100%;
+   }
+	
+	.zoneAlerte {
+		margin: 0 5px 10px 5px;
+		width: auto;
+	}
+}
+	
+@media only screen and (max-width: 479px) {
+			
+   .container {
+	   /*border: 1px solid red;*/
+	   width: 100%;
+   }
+
+  
+   .header {
+		background: url("../images/89238efe.bg-header.png") repeat-x 0 -8px;
+	}	
+	.zoneAlerte {
+		margin: 0 5px 10px 5px;
+		width: auto;
+	}	
+
+	.zoneAlerte h2 a {
+		font-size: 1.6em;
+	}
+	
+	.zoneOpen ul {
+		margin: 10px 10px 17px 17px;
+		background: url("../images/47875b98.picto-alerte-panneau.png") no-repeat scroll left 4px #FFFFFF;
+	}
+	.zoneOpen ul li p {
+		font-size: 1.4em;
+		font-weight: bold;
+		margin: 0 0 2px 0;
+	}
+
+	p.more {
+		font-size: 1.4em;
+	}
+	
+	.footer {
+		background: #EAEAEA;
+		min-height: 65px;
+	}	
+	.footer li {
+		margin-top: 8px;
+		max-width: 80%;
+	}
+	.footer li:first-child {
+		margin: 0;
+		width: 10%;
+		margin-top: 12px;
+	}
+	
+}
+
+@media only screen and (max-device-width:640px) and (orientation:landscape) {
+	body {
+		-webkit-text-size-adjust:80%!important
+	}
+}

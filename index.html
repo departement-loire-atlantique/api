@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>APIs - Département de Loire-Atlantique</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <link href="css/cg44.css" rel="stylesheet" media="all">
+  <link href="css/swagger-ui.css" media='screen' rel="stylesheet" type="text/css"  >
+</head>
+<body> 
+    <div id="appwrapper">
+      <div id="header" class="header">
+        <div class="container">
+          <h1 style="margin-left: 80px">
+            <a href="http://www.loire-atlantique.fr" title="Retour au site institutionnel">
+              <img src="images/ef1b8a2c.titre-header-cg.png" alt="Département de Loire-Atlantique : Accès au site institutionnel">
+            </a>
+          </h1>
+          <div class="entete" style="margin-left: 80px"><a href="/"><img src="images/logo-entete.png" alt="Département de Loire-Atlantique : Open API"></a></div>
+        </div>
+      </div>
+      <div id="maincontent" class="swagger-section">
+        <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
+        <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js"></script>
+        <script type="text/javascript">
+          window.onload = function() {
+            const ui = SwaggerUIBundle({
+              url: "openapi.json",
+              dom_id: '#swagger-ui-container',
+              deepLinking: true,
+              displayRequestDuration: true,
+              presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+              ],
+              plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+              ],
+              validatorUrl: '',
+              layout: "BaseLayout"
+            })
+            // End Swagger UI call region
+            window.ui = ui
+          }
+        </script>
+        <div id="swagger-ui-container"></div>
+
+        
+      </div>
+      <footer role="contentinfo" class="footer">
+        <div class="container">
+          <ul>
+            <li>
+                Généré avec <a id="logo" href="https://swagger.io/tools/swagger-ui/">Swagger UI</a>
+            <li>
+            <li>
+              <a href="http://loire-atlantique.fr" target="_blank">
+                <img src="images/84ea1039.logo-footer.png" alt="Un service du Département Loire Atlantique">
+              </a>
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+</body>
+</html>

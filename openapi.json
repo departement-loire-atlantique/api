@@ -1,0 +1,1233 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Liste des API publiques",
+    "description": "Dans le cadre du programme d'ouverture des données publiques (Open DATA), le Département de Loire-Atlantique a ouvert plusieurs interfaces de programmation applicative (API). \n\nPlus d'information sur http://data.loire-atlantique.fr. \n\nLes contrats des API REST disponibles sont décrits au format [OpenAPI v3](http://api.loire-atlantique.fr/openapi.json), vous pouvez donc profiter de tous [les outils associés à ce format comme les générateurs de code automatique](https://openapi.tools/#documentation)",
+    "contact": {},
+    "version": "v1.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://api.loire-atlantique.fr/opendata/1.0",
+      "variables": {}
+    },
+    {
+      "url": "http://rec-api.loire-atlantique.fr/opendata/1.0",
+      "variables": {}
+    }
+  ],
+  "tags": [
+    {
+      "name": "Agenda des loisirs et des sorties",
+      "description": "API de l'agenda des loisirs du Département, en partenariat avec OuestFrance"
+    },
+    {
+      "name": "Mobilité",
+      "description": "Sitution routière sur les routes du Département, état du pont de Saint Nazaire, images des files d'attente au niveau des bacs de loire"
+    },
+    {
+      "name": "Paramètres",
+      "description": "Liste de paramètres dynamiques permettant de paramétrer des valeurs adhoc et valides aux autres API"
+    }
+  ],
+  "paths": {
+    "/parameter/{parametersId}": {
+      "get": {
+        "summary": "Paramètres",
+        "description": "Retourne une liste de valeur de paramètres à partir d'une liste d'identifiants de paramètres",
+        "operationId": "parameter",
+        "tags": ["Paramètres"],
+        "parameters": [
+          {
+            "name": "parametersId",
+            "in": "path",
+            "description": "Liste d'identifiants de paramètres, séparés par des virgules. Exemple : AgendaMobile_rootAgendaCatIds,AgendaMobile_mainCarouselId",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/parametersId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Parameter"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Un ou plusieurs des identifiants de paramètres fournis n'existent pas ou plus"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/category/{catsId}": {
+      "get": {
+        "summary": "Liste de catégories",
+        "description": "Retourne une liste de catégories à partir d'une liste d'identifiants",
+        "operationId": "CategoryList",
+        "tags": ["Paramètres"],
+        "parameters": [
+          {
+            "name": "catsId",
+            "in": "path",
+            "description": "Liste d'identifiants de catégories, séparés par des virgules. Exemple : p2_100729,p2_100730",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "p2_100729"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Un des identifiants est invalide ou non accessible depuis l'API"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/category/{catsId}/children": {
+      "get": {
+        "summary": "Liste des enfants d'une catégorie",
+        "description": "Retourne une liste de catégories à partir d'une liste d'identifiants ainsi que les catégories enfantes",
+        "operationId": "categoryChildrenList",
+        "tags": ["Paramètres"],
+        "parameters": [
+          {
+            "name": "catsId",
+            "in": "path",
+            "description": "Liste d'identifiants de catégories, séparés par des virgules. Exemple : p2_100729,p2_100730",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "p2_100729"
+            }
+          },
+          {
+            "name": "depth",
+            "in": "query",
+            "description": "Profondeur souhaitée des sous catégories (Par défaut, un seul sous niveau est retourné)",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 10.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Category"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Un des identifiants est invalide ou non accessible depuis l'API"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/carousel/{carouselId}": {
+      "get": {
+        "summary": "Carousel",
+        "description": "Retourne un carousel à partir de son identifiant",
+        "operationId": "carousel",
+        "tags": ["Paramètres"],
+        "parameters": [
+          {
+            "name": "carouselId",
+            "in": "path",
+            "description": "Identifiant du carousel (Exemple : Récupérer un ID de test en appelant la méthode parameter avec le paramètre -AgendaMobile_mainCarouselId-",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Carousel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Identifiant inconnu"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/city": {
+      "get": {
+        "summary": "Villes",
+        "description": "Retourne la liste de toutes les villes de Loire-Atlantique",
+        "operationId": "cityList",
+        "tags": ["Paramètres"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/City"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/event/count": {
+      "get": {
+        "summary": "Nombre d'événements disponibles par type",
+        "description": "Retourne les compteurs d'évènements par thématique en fonction de critères de recherche",
+        "operationId": "eventCountByCategories",
+        "tags": ["Agenda des loisirs et des sorties"],
+        "parameters": [
+          {
+            "name": "catIds",
+            "in": "query",
+            "description": "Filtre sur une liste d'identifiants de catégories thématiques ou sous thématiques. L'identifiant d'une catégorie racine pour un agenda est accessible par la méthode -parameter- avec un id de paramètre de la forme AgendaXXX_rootAgendaCatIds. Puis les thématiques d'agenda à utiliser dans cette méthode sont récupérables à partir de la méthode /category/{catsId}/children en remplaçant {catsId} par l'identifiant racine d'un agenda obtenu précédemment.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "periodOfTime",
+            "in": "query",
+            "description": "Filtre sur la date de l'évènement. Seuls les évènements ayant lieu durant une période de temps défini par -fromDate- plus -periodOfTime- jours sont retournés. Par défaut, la période de temps est de 8 jours (-periodOfTime- égal à 7). Exemple : si -fromDate- est le 13 août et -periodOfTime- est 0 alors le filtre ne renvoit que les évènements ayant lieu le 13 août. Si -periodOfTime- vaut 1, alors le filtre retourne les évènements ayant lieu le 13 ou le 14 août.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 365.0,
+              "minimum": 0.0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "Filtre sur la date de l'évènement. Seuls les évènements ayant lieu durant une période de temps défini par -fromDate- plus -periodOfTime- jours sont retournés. Par défaut, la période de temps est de 8 jours (-periodOfTime- égal à 7). Exemple : si -fromDate- est le 13 août et -periodOfTime- est 0 alors le filtre ne renvoit que les évènements ayant lieu le 13 août. Si -periodOfTime- vaut 1, alors le filtre retourne les évènements ayant lieu le 13 ou le 14 août.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "insee",
+            "in": "query",
+            "description": "Filtre sur une ville à partir de son code INSEE",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "zoneLongitude",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. La longitude doit être envoyée au format WGS84.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 180.0,
+              "minimum": -180.0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "zoneLatitude",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. La latitude doit être envoyée au format WGS84.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 90.0,
+              "minimum": -90.0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "zoneDistance",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. L'unité de distance est le kilomètre.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventCount"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Critère de lieu invalide. Vérifier que la latitude et la longitude sont bien valides (WGS84) et que la distance est un nombre flotant dans l'intervalle de 1 à 1000 km."
+          },
+          "404": {
+            "description": "Critère de catégorie thématique incorrect"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/event/summary": {
+      "get": {
+        "summary": "Résumé d'un événement",
+        "description": "Retourne la liste paginée des évènements en fonction de critères de recherche",
+        "operationId": "eventSummaryList",
+        "tags": ["Agenda des loisirs et des sorties"],
+        "parameters": [
+          {
+            "name": "catIds",
+            "in": "query",
+            "description": "Filtre sur une liste d'identifiants de catégories thématiques ou sous thématiques. L'identifiant d'une catégorie racine pour un agenda est accessible par la méthode -parameter- avec un id de paramètre de la forme AgendaXXX_rootAgendaCatIds. Puis les thématiques d'agenda à utiliser dans cette méthode sont récupérables à partir de la méthode /category/{catsId}/children en remplaçant {catsId} par l'identifiant racine d'un agenda obtenu précédemment.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "periodOfTime",
+            "in": "query",
+            "description": "Filtre sur la date de l'évènement. Seuls les évènements ayant lieu durant une période de temps défini par -fromDate- plus -periodOfTime- jours sont retournés. Par défaut, la période de temps est de 8 jours (-periodOfTime- égal à 7). Exemple : si -fromDate- est le 13 août et -periodOfTime- est 0 alors le filtre ne renvoit que les évènements ayant lieu le 13 août. Si -periodOfTime- vaut 1, alors le filtre retourne les évènements ayant lieu le 13 ou le 14 août.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 365.0,
+              "minimum": 0.0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "Filtre sur la date de l'évènement. Seuls les évènements ayant lieu durant une période de temps défini par -fromDate- plus -periodOfTime- jours sont retournés. Par défaut, la période de temps est de 8 jours (-periodOfTime- égal à 7). Exemple : si -fromDate- est le 13 août et -periodOfTime- est 0 alors le filtre ne renvoit que les évènements ayant lieu le 13 août. Si -periodOfTime- vaut 1, alors le filtre retourne les évènements ayant lieu le 13 ou le 14 août.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "insee",
+            "in": "query",
+            "description": "Filtre sur une ville à partir de son code INSEE",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "zoneLongitude",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. La longitude doit être envoyée au format WGS84.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 180.0,
+              "minimum": -180.0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "zoneLatitude",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. La latitude doit être envoyée au format WGS84.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 90.0,
+              "minimum": -90.0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "zoneDistance",
+            "in": "query",
+            "description": "Filtre sur le lieu de l'évènement : Seuls les évènements ayant lieu à moins de -zoneDistance- du point de recherche défini par -zoneLatitude,zoneLongiture- sont retournés. L'unité de distance est le kilomètre.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 1000.0,
+              "minimum": 1.0,
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Numero de page du paginateur (Par défaut égal à 1, soit la première page)",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "minimum": 1.0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "itemsPerPage",
+            "in": "query",
+            "description": "Nombre d'élèments par page pour la pagination. La valeur par défaut est 5.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "type": "integer",
+              "format": "int32",
+              "default": 5,
+              "example": 5
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventSummaryPager"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Critère de lieu invalide. Vérifier que la latitude et la longitude sont bien valides (WGS84) et que la distance est un nombre flotant dans l'intervalle de 1 à 1000 km."
+          },
+          "404": {
+            "description": "Critère de catégorie thématique invalide"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/event/{eventId}": {
+      "get": {
+        "summary": "Détail complet d'un événement",
+        "description": "Retourne la fiche détaillée d'un évènement à partir de son identifiant",
+        "operationId": "event",
+        "tags": ["Agenda des loisirs et des sorties"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Identifiant de l'évènement",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parentCatIds",
+            "in": "query",
+            "description": "Les évènements sont souvent publiés dans plusieurs thématiques principales (autrement appelées agendas). Aussi, ce critère permet de notifier à l'API quelles sont les thématiques principales ou sous les thématiques concernées par notre recherche. Ainsi, seules les catégories de thématiques et sous thématiques concernées par notre recherche seront retournées dans la fiche détail au sein du champ -category-.",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Identifiant inconnu"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/psnstatus": {
+      "get": {
+        "summary": "Etat du pont",
+        "description": "Retourne l'état du Pont de Saint Nazaire en temps réel au format Mxyz, avec x, y, z valant 0 (voie fermée), 1 (voie ouverte dans le sens St Nazaire-St Brévin) ou 2 (voie ouverte dans le sens St Brévin-St Nazaire). Exemple M102 = voie centrale fermée. Si le code commence par Mu, il s'agit d'une situation d'urgence (évènement sur le pont). Si le code commence par Me, il s'agit d'un mode exceptionnel (travaux, accident). M000 signifie que le pont est fermé à la circulation. En cas d'anomalie technique, le service retourne INDETERMINE pour le sens de circulation",
+        "operationId": "PSNStatut",
+        "tags": ["Mobilité"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PSNStatus"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/traficevents": {
+      "get": {
+        "summary": "Liste des événements routiers",
+        "description": "Retourne la liste des évènements routiers en Loire-Atlantique",
+        "operationId": "TraficEvents",
+        "tags": ["Mobilité"],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Filtre",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TraficEvent"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/webcam": {
+      "get": {
+        "summary": "Image d'une webcam",
+        "description": "Retourne l'image d'une webcam",
+        "operationId": "Webcam",
+        "tags": ["Mobilité"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Identifiant de l'image de la webcam",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          },
+          "403": {
+            "description": "Identifiant inconnu ou accès restreint"
+          },
+          "404": {
+            "description": "Identifiant inconnu"
+          }
+        },
+        "deprecated": false,
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Category": {
+        "title": "Category",
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "name": {
+            "type": "string",
+            "description": "Libellé"
+          },
+          "color": {
+            "type": "string",
+            "description": "Couleur associée au format web. Exemple : #07F36C"
+          },
+          "icon": {
+            "type": "string",
+            "description": "URL d'accès à l'image d'illustration de la catégorie"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Liste ordonnée des sous catégories"
+          }
+        },
+        "description": "Une catégorie est un attribut de classification. Exemple : les évènements loisirs (API events) sont associés à plusieurs catégories de classement tel la 'thématique' et la 'sous thématique'"
+      },
+      "Parameter": {
+        "title": "Parameter",
+        "required": [
+          "id",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "value": {
+            "type": "string",
+            "description": "Valeur du paramètre. Le format dépend du paramètre (numérique, alphanumérique, JSON ou HTML)"
+          }
+        },
+        "description": "Un paramètre est un couple clé-valeur"
+      },
+      "Carousel": {
+        "title": "Carousel",
+        "required": [
+          "id",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CarouselItem"
+            },
+            "description": "Liste ordonnée d'éléments de carousel"
+          }
+        },
+        "description": "Un carousel est une liste d'élément carousel"
+      },
+      "CarouselItem": {
+        "title": "CarouselItem",
+        "required": [
+          "id",
+          "title",
+          "picture"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "title": {
+            "type": "string",
+            "description": "Libellé"
+          },
+          "link": {
+            "type": "string",
+            "description": "Lien vers un contenu tiers"
+          },
+          "linkTitle": {
+            "type": "string",
+            "description": "Texte associé au lien vers un contenu tiers"
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL d'accès à l'image d'illustration"
+          },
+          "pictureLegend": {
+            "type": "string",
+            "description": "Légende de l'image d'illustration"
+          },
+          "pictureCopyright": {
+            "type": "string",
+            "description": "Crédits associés à l'image d'illustration"
+          }
+        },
+        "description": "Elément de carousel"
+      },
+      "City": {
+        "title": "City",
+        "required": [
+          "id",
+          "title",
+          "insee"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "title": {
+            "type": "string",
+            "description": "Nom"
+          },
+          "insee": {
+            "type": "integer",
+            "description": "Code INSEE",
+            "format": "int32"
+          }
+        },
+        "description": "Ville"
+      },
+      "EventCount": {
+        "title": "EventCount",
+        "required": [
+          "id",
+          "count"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifiant unique de la catégorie (thématique ou sous thématique)"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Nombre d'évènements pour la thématique",
+            "format": "int32"
+          }
+        },
+        "description": "Compteur d'éléments pour une thématique"
+      },
+      "EventSummaryPager": {
+        "title": "EventSummaryPager",
+        "required": [
+          "pager",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "pager": {
+            "$ref": "#/components/schemas/Pager"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventSummary"
+            },
+            "description": ""
+          }
+        },
+        "description": "Element de pagination d'une liste d'évènement"
+      },
+      "EventSummary": {
+        "title": "EventSummary",
+        "required": [
+          "eventId",
+          "title",
+          "city",
+          "startDate",
+          "endDate"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titre"
+          },
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Catégories des thématiques et sous thématiques associées à l'évènement, filtrées en fonction des catégories de thématiques et sous thématiques transmises dans la requête. Exemple : Si la requête filtre sur les sous thématiques ROCK et ELECTRO, alors seules ces deux thématiques pourront être associés avec les évènements retournés. Ainsi si un évènement est associé à ROCK et JAZZ, alors seul ROCK sera retourné ici."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Date de début de l'évènement. Parfois, un évènement est multi-daté, dans ce cas, il existe une fiche évènement par date. La date transmise ici ne correspond alors qu'à une seule occurence de l'évènement. Si l'évènement est sur une seule journée, la date début et de fin d'évènement se confondent.",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Date de fin de l'évènement. Parfois, un évènement est multi-daté, dans ce cas, il existe une fiche évènement par date. La date transmise ici ne correspond alors qu'à une seule occurence de l'évènement. Si l'évènement est sur une seule journée, la date début et de fin d'évènement se confondent.",
+            "format": "date"
+          },
+          "geoLongitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "type": "number",
+            "description": "Longitude du lieu de l'évènement au format WGS84"
+          },
+          "geoLatitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "type": "number",
+            "description": "Latitude du lieu de l'évènement au format WGS84"
+          },
+          "geoPrecision": {
+            "$ref": "#/components/schemas/GeoPrecision"
+          }
+        },
+        "description": "Description succinte d'un évènement"
+      },
+      "Pager": {
+        "title": "Pager",
+        "required": [
+          "itemsPerPage",
+          "currentPage",
+          "nbPages",
+          "nbItems"
+        ],
+        "type": "object",
+        "properties": {
+          "itemsPerPage": {
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "type": "integer",
+            "description": "Nombre maximum d'éléments par page",
+            "format": "int32"
+          },
+          "currentPage": {
+            "minimum": 1.0,
+            "type": "integer",
+            "description": "Index de la page courante",
+            "format": "int32"
+          },
+          "nbPages": {
+            "minimum": 1.0,
+            "type": "integer",
+            "description": "Nombre total de pages",
+            "format": "int32"
+          },
+          "nbItems": {
+            "minimum": 1.0,
+            "type": "integer",
+            "description": "Nombre total d'éléments",
+            "format": "int32"
+          }
+        },
+        "description": "Paginateur"
+      },
+      "Event": {
+        "title": "Event",
+        "required": [
+          "eventId",
+          "title",
+          "city",
+          "startDate",
+          "endDate",
+          "line1",
+          "line2",
+          "line3",
+          "permalink"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Identifiant unique"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titre"
+          },
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
+          "category": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "description": "Catégories des thématiques et sous thématiques associées à l'évènement, filtrées en fonction des catégories de thématiques et sous thématiques transmises dans la requête. Exemple : Si la requête filtre sur les sous thématiques ROCK et ELECTRO, alors seules ces deux thématiques pourront être associés avec les évènements retournés. Ainsi si un évènement est associé à ROCK et JAZZ, alors seul ROCK sera retourné ici."
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Date de début de l'évènement. Parfois, un évènement est multi-daté, dans ce cas, il existe une fiche évènement par date. La date transmise ici ne correspond alors qu'à une seule occurence de l'évènement. Si l'évènement est sur une seule journée, la date début et de fin d'évènement se confondent.",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "description": "Date de fin de l'évènement. Parfois, un évènement est multi-daté, dans ce cas, il existe une fiche évènement par date. La date transmise ici ne correspond alors qu'à une seule occurence de l'évènement. Si l'évènement est sur une seule journée, la date début et de fin d'évènement se confondent.",
+            "format": "date"
+          },
+          "line1": {
+            "type": "string",
+            "description": "Premier paragraphe de la description de l'évènement. Pour assurer une bonne compréhension de l'évènement, il est nécessaire d'afficher au moins le premier et le troisième paragraphe. Le second et le quatrième paragraphe sont des compléments d'information."
+          },
+          "line2": {
+            "type": "string",
+            "description": "Second paragraphe de la description de l'évènement"
+          },
+          "line3": {
+            "type": "string",
+            "description": "Troisième paragraphe de la description de l'évènement"
+          },
+          "line4": {
+            "type": "string",
+            "description": "Quatrième paragraphe de la description de l'évènement"
+          },
+          "geoLongitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "type": "number",
+            "description": "Longitude du lieu de l'évènement au format WGS84"
+          },
+          "geoLatitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "type": "number",
+            "description": "Latitude du lieu de l'évènement au format WGS84"
+          },
+          "geoPrecision": {
+            "$ref": "#/components/schemas/GeoPrecision"
+          },
+          "permalink": {
+            "type": "string",
+            "description": "URL permanente de l'évènement sur le site www.loire-atlantique.fr. Ce lien peut être utilisé pour proposer une fonction de partage social de l'évènement par exemple."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "description": "Lien vers des ressources externes associés à cet évènement"
+          },
+          "focus": {
+            "type": "boolean",
+            "description": "Si le focus est à VRAI alors il s'agit d'un évènement pour lequel l'équipe de rédaction du Département de Loire-Atlantique a choisi de souligner les mérites"
+          },
+          "image": {
+            "type": "string",
+            "description": "URL de l'image d'illustration associée à l'évènement"
+          }
+        },
+        "description": "Description complète d'un évènement"
+      },
+      "Link": {
+        "title": "Link",
+        "required": [
+          "title",
+          "mime"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL complète vers la ressource"
+          },
+          "title": {
+            "type": "string",
+            "description": "Libellé du lien"
+          },
+          "mime": {
+            "type": "string",
+            "description": "Type MIME (Exemple : 'application/xhtml+xml' pour un lien vers un site internet)"
+          },
+          "size": {
+            "type": "integer",
+            "description": "Poids du fichier. Cette valeur n'est renseignée que si le document est hébergé sur le site www.loire-atlantique.fr. Si la taille est inconnu ce champ est absent du retour ou égal à -1",
+            "format": "int64"
+          }
+        },
+        "description": "Lien vers un ressource tierce"
+      },
+      "PSNStatus": {
+        "title": "PSNStatus",
+        "required": [
+          "code_current_mode",
+          "lib_current_mode",
+          "TIME-STBREVIN-CERTE",
+          "TIME-CERTE-STBREVIN"
+        ],
+        "type": "object",
+        "properties": {
+          "code_current_mode": {
+            "type": "string",
+            "description": "Code du sens de circulation courant (<a href='http://api.loire-atlantique.fr/ModeCirculation.htm'>Liste des codes possibles</a>)"
+          },
+          "lib_current_mode": {
+            "type": "string",
+            "description": "Libellé du sens de circulation courant (Alternative textuelle au code)"
+          },
+          "next_mode": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NextMode"
+            },
+            "description": "Deux prochains sens de circulation programmés"
+          },
+          "TIME-STBREVIN-CERTE": {
+            "type": "integer",
+            "description": "Temps de parcours estimé en minute pour parcourir le tronçon Saint-Brevin (WGS 84 : 47.23882, -2.157441) - Certé (WGS 84 : 47,30032 -2,20695)",
+            "format": "int32"
+          },
+          "TIME-CERTE-STBREVIN": {
+            "type": "integer",
+            "description": "Temps de parcours estimé en minute pour parcourir le tronçon Certé (WGS 84 : 47,30032 -2,20695) - Saint-Brevin (WGS 84 : 47.23882, -2.157441)",
+            "format": "int32"
+          },
+          "closed_from": {
+            "type": "object",
+            "description": "Date de début de la prochaine fermeture programmée du Pont, le cas échéant"
+          },
+          "closed_to": {
+            "type": "object",
+            "description": "Date de fin de la prochaine fermeture programmée du Pont, le cas échéant"
+          }
+        },
+        "description": "Etat complet des informations disponibles en temps réel pour le pont de Saint-Nazaire"
+      },
+      "NextMode": {
+        "title": "NextMode",
+        "required": [
+          "code_mode",
+          "lib_mode",
+          "from"
+        ],
+        "type": "object",
+        "properties": {
+          "code_mode": {
+            "type": "string",
+            "description": "Code du sens de circulation (<a href='http://api.loire-atlantique.fr/ModeCirculation.htm'>Liste des codes possibles</a>)"
+          },
+          "lib_mode": {
+            "type": "string",
+            "description": "Libellé du sens de circulation (Alternative textuelle au code)"
+          },
+          "from": {
+            "type": "object",
+            "description": "Horaire à partir duquel le changement de mode est programmé. De manière occasionnelle, le changement de mode réel peut avoir lieu un peu après l'horaire programmé ou être complètement annulé en fonction des évènements ayant lieu sur le pont tel un accident ou un bouchon important."
+          }
+        },
+        "description": "Prochain sens de circulation (mode de circulation) sur le pont de Saint Nazaire"
+      },
+      "TraficEvent": {
+        "title": "TraficEvent",
+        "required": [
+          "identifiant",
+          "datePublication",
+          "ligne1",
+          "rattachement",
+          "nature",
+          "type",
+          "statut"
+        ],
+        "type": "object",
+        "properties": {
+          "identifiant": {
+            "type": "string",
+            "description": "Identifiant de l'évènement dans sa situation (A chaque modification de l'évènement, cet identifiant est susceptible d'être modifié)"
+          },
+          "datePublication": {
+            "type": "object",
+            "description": "Date de création de l'évènement au sein du système d'information routier du Département"
+          },
+          "ligne1": {
+            "type": "string",
+            "description": "Première ligne de la description de l'évènement. Cette ligne contient, le plus souvent, un titre court associé à l'évènement en relation avec sa nature"
+          },
+          "ligne2": {
+            "type": "string",
+            "description": "Seconde ligne de la description de l'évènement. Cette ligne contient, le plus souvent, la localisation de l'évènement (nom de l'axe routier concerné par exemple)"
+          },
+          "ligne3": {
+            "type": "string",
+            "description": "Troisième ligne de la description de l'évènement. Cette ligne contient, le plus souvent, le sens de circulation impacté par l'évènement ou le nom du tronçon de route concerné"
+          },
+          "ligne4": {
+            "type": "string",
+            "description": "Quatrième ligne de la description de l'évènement. Cette ligne contient, le plus souvent, des éléments relatifs à la temporalité de l'évènement"
+          },
+          "ligne5": {
+            "type": "string",
+            "description": "Cinquième ligne de la description de l'évènement. Cette ligne contient le plus souvent des éléments relatifs à la temporalité des restrictions de circulation en place"
+          },
+          "ligne6": {
+            "type": "string",
+            "description": "Sixième ligne de la description de l'évènement. Cette ligne contient, le plus souvent, des informations sur les restrictions de circulation en place"
+          },
+          "rattachement": {
+            "type": "string",
+            "description": "Ce texte contient le libellé d'une zone clé du réseau routier concerné. Exemple 'Pont de Saint-Nazaire', 'Bac de Loire Couëron / Le Pellerin', 'Bac de Loire Basse-Indre / Indret' ou encore 'Autre'"
+          },
+          "nature": {
+            "type": "string",
+            "description": "Précise la nature de l'évènement : Accident, Autre danger, Bacs de loire ou Vent"
+          },
+          "type": {
+            "type": "string",
+            "description": "Renvoie une des valeurs suivantes : <br><ul><li>pour les événements 'pont' : Accident, VL en panne, Vent</li><li>pour les événements 'bacs de loire' : Brume, Marée basse, Marée haute, Panne, Vent fort, Houle, Glaces, Ravitaillement, Incident ou un texte libre de 15 caractères maximum</li></ul>"
+          },
+          "statut": {
+            "type": "string",
+            "description": "(Acceptable values are: \"en cours\", \"prévisionnel\")",
+            "example": "en cours"
+          },
+          "longitude": {
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "type": "number",
+            "description": "Longitude du lieu de l'évènement au format WGS84"
+          },
+          "latitude": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "type": "number",
+            "description": "Latitude du lieu de l'évènement au format WGS84"
+          }
+        },
+        "description": "Evènement routier"
+      },
+      "GeoPrecision": {
+        "title": "GeoPrecision",
+        "enum": [
+          "CITY",
+          "ROAD"
+        ],
+        "type": "string",
+        "description": "Si ce champ est égal à 'ROAD' alors la géolocalition de l'évènement est précis. Sinon (valeur égale à CITY), il s'agit d'une géolocalisation approchée, c'est le centre de la ville hébergeant l'évènement qui est retourné."
+      },
+      "id": {
+        "title": "id",
+        "enum": [
+          "psn",
+          "indre1",
+          "indre2",
+          "coueron1",
+          "coueron2"
+        ],
+        "type": "string"
+      },
+      "parametersId": {
+        "title": "parametersId",
+        "enum": [
+          "AgendaLoisirs_rootAgendaCatIds",
+          "AgendaMobile_rootAgendaCatIds",
+          "AgendaMobile_mainCarouselId",
+          "AgendaMobile_creditPageContent"
+        ],
+        "type": "string"
+      }
+    }
+  }
+}
