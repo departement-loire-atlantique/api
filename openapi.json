@@ -8,11 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://api.loire-atlantique.fr/opendata/1.0",
-      "variables": {}
-    },
-    {
-      "url": "http://rec-api.loire-atlantique.fr/opendata/1.0",
+      "url": "/opendata/1.0",
       "variables": {}
     }
   ],
