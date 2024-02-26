@@ -1,4 +1,4 @@
-**[Ce projet est désormais archivé dans le Gitlab du CD44](https://gitlab.loire-atlantique.fr/developpement/api/historique-api*)**
+**[Ce projet est désormais archivé dans le Gitlab du CD44](https://gitlab.loire-atlantique.fr/developpement/api/historique-api)**
 
 ------
 
